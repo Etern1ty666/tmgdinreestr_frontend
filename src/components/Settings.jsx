@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Flex } from 'antd';
 import AuthContext from "../context/AuthProvider";
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const Settings = () => {
   let {user, logoutUser} = useContext(AuthContext)
   const navigate = useNavigate();
+  let [authTokens, setAuthTokens] = useState(()=> localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
 
   let connectTelegram = async ()=> {
     try {
@@ -40,7 +41,7 @@ const Settings = () => {
         <Button onClick={()=>{navigate('/uploadExcel')}} color="primary" variant="text">
           Загрузить данные из Excel
         </Button>
-        <Button onClick={()=>{connectTelegram}} color="primary" variant="text">
+        <Button onClick={connectTelegram} color="primary" variant="text">
           Привязать Telegram
         </Button>
         <Button onClick={logOut} color="primary" variant="text">
