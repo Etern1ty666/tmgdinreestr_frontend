@@ -99,6 +99,27 @@ const Certificate = () => {
         console.log(e);
     }
     }
+    let editFile = async ()=> {
+      try {
+          let response = await fetch(process.env.REACT_APP_API_URL + "editFile", {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer ' + authTokens.access
+              },
+              body:JSON.stringify({'image': randomKey + '_' + fileName, "id": id})
+          })
+          const jsonData = await response.json();
+          if(jsonData === "Error"){
+              console.log('Error create employee')
+          }else{
+            console.log(jsonData)
+          }
+          
+      } catch (e) {
+          console.log(e);
+      }
+  }
   const confirm = (e) => {
     deleteCertificate();
     navigate('/employees/'+Number(certificate.employee));
@@ -120,6 +141,7 @@ const Certificate = () => {
         }
       </>
       :
+      <>
       <Upload beforeUpload={()=> {setRandomKey(generateRandomKey)}} name={'file'} data={{'uid': randomKey}} headers={{
             'Authorization': 'Bearer ' + authTokens.access
         }} onChange={saveImage} action="https://api-tmg-din-reestr.ru/addImage" listType="picture-card" maxCount={1}>
@@ -140,6 +162,10 @@ const Certificate = () => {
           </div>
         </button>
       </Upload>
+      <Button onClick={editFile} type="primary" htmlType="submit">
+        Сохранить
+      </Button>
+      </>
     }
     <Descriptions layout='vertical' style={{margin: 20}} bordered items={items}/>
     <Popconfirm
