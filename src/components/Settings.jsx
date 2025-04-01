@@ -11,6 +11,8 @@ const Settings = () => {
   let [authTokens, setAuthTokens] = useState(()=> localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
 
   let connectTelegram = async ()=> {
+    const tg = window.Telegram.WebApp
+    console.log(tg)
     try {
         let response = await fetch(process.env.REACT_APP_API_URL + "connectTelegram", {
             method: 'POST',
@@ -18,7 +20,7 @@ const Settings = () => {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + authTokens.access
             },
-            body:JSON.stringify({'id': window.Telegram.WebApp.initDataUnsafe.user.id})
+            body:JSON.stringify({'id': tg.initDataUnsafe.user.id})
         })
         const jsonData = await response.json();
         console.log(jsonData)
